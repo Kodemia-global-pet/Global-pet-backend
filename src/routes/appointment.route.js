@@ -1,8 +1,8 @@
 // Endpoint
 const express = require("express");
 
-const { createAppointment, getAppointment, updateAppointment, deleteAppointment } = require("../usecases/appointment.usecase");
-const { updatePetAppointments, getAppointmentsbyPetID } = require("../usecases/pet.usecase");
+const { createAppointment, getAppointment, updateAppointment, deleteAppointment, updateAppointmetAttachments } = require("../usecases/appointment.usecase");
+const { createAttachment } = require("../usecases/attachment.usecase");
 
 const router = express.Router();
 
@@ -26,54 +26,12 @@ router.post("/", async (request, response) => {
     }    
 });
 
-//Add apointment by Pet ID
-router.post("/pet/:id", async (request, response) => {
-    const { body, params } = request;
-    
-    try{
-        const appt = await createAppointment(body);        
-        //Update pet with appt ID
-        const pet = await updatePetAppointments(params.id, appt._id)
-        response.status(201);
-        response.json({
-            success: true,
-            data: {appt, pet}
-        });
-    }
-    catch(error){
-        response.status(400)
-        response.json({
-            success: false,
-            message: error.message
-        });
-    }    
-});
-
 //Get Appt by ID
 router.get("/:id", async (request, response) => {
     try {
         // Path params
         const { params } = request;
         const appt = await getAppointment(params.id);
-        response.json({
-            success: true,
-            data: { appt }
-        });
-    } catch (error) {
-        response.status(400);
-        response.json({
-            success: false,
-            message: error.message
-        });
-    }
-});
-
-//Get Appointments by Pet ID
-router.get("/pet/:id", async (request, response) => {
-    try {
-        // Path params
-        const { params } = request;
-        const appt = await getAppointmentsbyPetID(params.id);
         response.json({
             success: true,
             data: { appt }
@@ -127,6 +85,28 @@ router.delete("/:id", async (request, response) => {
     }
 });
 
+//Add attachment by Appointment ID
+router.post("/:id/attachments", async (request, response) => {
+    const { body, params } = request;
+    
+    try{
+        const attachment = await createAttachment(body);        
+        //Update pet with appt ID
+        const appt = await updateAppointmetAttachments(params.id, attachment._id)
+        response.status(201);
+        response.json({
+            success: true,
+            data: {appt, attachment}
+        });
+    }
+    catch(error){
+        response.status(400)
+        response.json({
+            success: false,
+            message: error.message
+        });
+    }    
+});
 
 //Export
 module.exports = router;// Endpoints

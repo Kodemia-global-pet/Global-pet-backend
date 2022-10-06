@@ -14,7 +14,14 @@ const getPet = (id) => {
 
 //Get Pet Appointments
 const getAppointmentsbyPetID = (id) => {
-    const appt = Pet.findById(id).populate('appointments');
+    const appt = Pet.findById(id).populate({
+        path: 'appointments',
+        model: 'appointment',
+        populate: {
+            path: 'attachments',
+            model: 'attachment'
+        }
+      });
     return appt;
 }
 
