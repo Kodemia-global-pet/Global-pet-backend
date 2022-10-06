@@ -1,15 +1,17 @@
 const mongoose = require("mongoose");
 //const { StringDecoder } = require("string_decoder");
 
-const userSchema = new mongoose.Schema({
-    id: {
-        type: String,
-    },
+const userSchema = new mongoose.Schema({    
     name: {
         type: String,
         minlength: 3,
         maxlength: 100,
         required: true
+    },
+    last_name:{
+        type: String,
+        minlength: 3,
+        maxlength: 100
     },
     email: {
         type: String,
@@ -44,7 +46,7 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     pets:{
-        type: [String]
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'pet' }]
     } 
 })
 

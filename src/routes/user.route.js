@@ -1,12 +1,9 @@
 const express = require("express");
 const auth = require ("../middlewares/auth.middleware");
 
-const {
-    createUser,
-    getUser,
-    updateUser,
-    deleteUser,
-} = require("../usecases/user.usecase");
+const { createUser, getUser, updateUser, deleteUser, updateUserPets} = require("../usecases/user.usecase");
+const { createPet } = require("../usecases/pet.usecase");
+
 
 
 const router = express.Router();
@@ -95,6 +92,29 @@ router.delete("/:id", auth, async(request,response) =>{
     })
   }
     
+});
+
+//Create pet by user id
+router.post("/:id/pet", async (request, response) => {
+    const { body, params } = request;
+    
+    try{
+        const pet = await createPet(body);        
+        //Update pet with appt ID
+        const user = await updateUserPets(params.id, pet._id)
+        response.status(201);
+        response.json({
+            success: true,
+            data: {user, pet}
+        });
+    }
+    catch(error){
+        response.status(400)
+        response.json({
+            success: false,
+            message: error.message
+        });
+    }     
 });
 
 //Export
