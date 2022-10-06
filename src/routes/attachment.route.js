@@ -1,21 +1,15 @@
 const express = require("express");
 const auth = require ("../middlewares/auth.middleware");
 
-const {
-    createUser,
-    getUser,
-    updateUser,
-    deleteUser,
-} = require("../usecases/user.usecase");
-
+const { createAttachment, getAttachment, updateAttachment, deleteAttachment } = require("../usecases/attachment.usecase");
 
 const router = express.Router();
 
-//Create user
+//Create
 router.post("/", async (request, response) => {
     const { body } = request;
     try{
-        const user = await createUser(body);
+        const user = await createAttachment(body);
         response.status(201)
         response.json({
             success: true,
@@ -33,11 +27,11 @@ router.post("/", async (request, response) => {
     }    
 });
 
-//Get User by ID
+//Get attachment by ID
 router.get("/:id", async(request,response) =>{
     try{
         const { params } = request
-        const user = await getUser(params.id)
+        const user = await getAttachment(params.id)
         response.status(200);
         response.json({
             success: true,
@@ -56,10 +50,10 @@ router.get("/:id", async(request,response) =>{
 });
 
 //Update
-router.patch("/:id", auth, async (request,response) =>{
+router.patch("/:id", async (request,response) =>{
     try{
         const { params, body } = request
-        const user = await updateUser(params.id, body)
+        const user = await updateAttachment(params.id, body)
         response.status(200)
         response.json({
             success: true,
@@ -79,10 +73,10 @@ router.patch("/:id", auth, async (request,response) =>{
 });
 
 //Delete
-router.delete("/:id", auth, async(request,response) =>{
+router.delete("/:id", async(request,response) =>{
     try{
         const { params } = request
-        const user = await deleteUser(params.id)
+        const user = await deleteAttachment(params.id)
         response.status(200)
         response.json({
             success: true,
