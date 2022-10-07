@@ -1,5 +1,4 @@
 const express = require("express");
-const auth = require ("../middlewares/auth.middleware");
 
 const { createAttachment, getAttachment, updateAttachment, deleteAttachment } = require("../usecases/attachment.usecase");
 
@@ -71,6 +70,7 @@ router.patch("/:id", async (request,response) =>{
   }
     
 });
+
 
 //Delete
 router.delete("/:id", async(request,response) =>{

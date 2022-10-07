@@ -24,4 +24,9 @@ const deleteAppointment = (id) => {
     return appt;
 }
 
-module.exports = { createAppointment, getAppointment, updateAppointment, deleteAppointment }
+const updateAppointmetAttachments  = (id, attachmentID) => {
+    const appt = Appointment.findByIdAndUpdate(id, { $addToSet: { attachments : attachmentID  } }, { returnDocument: "after" })
+    return appt;
+}
+
+module.exports = { createAppointment, getAppointment, updateAppointment, deleteAppointment, updateAppointmetAttachments }

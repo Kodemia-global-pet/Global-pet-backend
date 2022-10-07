@@ -14,7 +14,7 @@ const appointmentSchema = new mongoose.Schema({
     other_info: {
         type: String
     },
-    attachment:{
+    attachments:{
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'attachment' }]
     }
 })

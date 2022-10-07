@@ -1,8 +1,8 @@
 // Endpoint
 const express = require("express");
 
-const { createPet, getPet, updatePet, deletePet } = require("../usecases/pet.usecase");
-
+const { createPet, getPet, updatePet, deletePet, updatePetAppointments, getAppointmentsbyPetID } = require("../usecases/pet.usecase");
+const { createAppointment } = require("../usecases/appointment.usecase");
 const router = express.Router();
 
 //Create
@@ -81,6 +81,48 @@ router.delete("/:id", async (request, response) => {
         success: false,
         message: error.message
       })
+    }
+});
+
+//Add apointment by Pet ID
+router.post("/:id/appointments", async (request, response) => {
+    const { body, params } = request;
+    
+    try{
+        const appt = await createAppointment(body);        
+        //Update pet with appt ID
+        const pet = await updatePetAppointments(params.id, appt._id)
+        response.status(201);
+        response.json({
+            success: true,
+            data: {appt, pet}
+        });
+    }
+    catch(error){
+        response.status(400)
+        response.json({
+            success: false,
+            message: error.message
+        });
+    }    
+});
+
+//Get Appointments by Pet ID
+router.get("/:id/appointments", async (request, response) => {
+    try {
+        // Path params
+        const { params } = request;
+        const appt = await getAppointmentsbyPetID(params.id);
+        response.json({
+            success: true,
+            data: { appt }
+        });
+    } catch (error) {
+        response.status(400);
+        response.json({
+            success: false,
+            message: error.message
+        });
     }
 });
 

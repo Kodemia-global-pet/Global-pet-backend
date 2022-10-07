@@ -10,7 +10,18 @@ const createUser = async (userData) => {
 }
 
 const getUser = (id) => {
-    const user = User.findById(id)
+    const user = User.findById(id).populate({
+        path: 'pets',
+        model: 'pet',
+        populate: {
+            path: 'appointments',
+            model: 'appointment',
+            populate: {
+                path: 'attachments',
+                model: 'attachment'
+            }
+        }
+      });
     return user;
 }
 
@@ -30,10 +41,9 @@ const deleteUser = (id) => {
     return user;
 }
    
-
-module.exports = { 
-createUser,
-getUser,
-updateUser, 
-deleteUser
+const updateUserPets  = (id, petID) => {
+    const pet = User.findByIdAndUpdate(id, { $addToSet: { pets : petID  } }, { returnDocument: "after" })
+    return pet;
 }
+
+module.exports = { createUser, getUser, updateUser, deleteUser, updateUserPets }
