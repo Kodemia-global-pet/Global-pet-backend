@@ -4,7 +4,6 @@ const { createAttachment, getAttachment, updateAttachment, deleteAttachment } = 
 
 const router = express.Router();
 
-//Create
 router.post("/", async (request, response) => {
     const { body } = request;
     try{
@@ -26,7 +25,6 @@ router.post("/", async (request, response) => {
     }    
 });
 
-//Get attachment by ID
 router.get("/:id", async(request,response) =>{
     try{
         const { params } = request
@@ -48,7 +46,6 @@ router.get("/:id", async(request,response) =>{
     
 });
 
-//Update
 router.patch("/:id", async (request,response) =>{
     try{
         const { params, body } = request
@@ -71,8 +68,6 @@ router.patch("/:id", async (request,response) =>{
     
 });
 
-
-//Delete
 router.delete("/:id", async(request,response) =>{
     try{
         const { params } = request

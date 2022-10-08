@@ -5,6 +5,9 @@ const attachmentSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    title: {
+        type: String
+    },
     description: {
         type: String
     },

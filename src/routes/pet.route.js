@@ -1,11 +1,9 @@
-// Endpoint
 const express = require("express");
 
-const { createPet, getPet, updatePet, deletePet, updatePetAppointments, getAppointmentsbyPetID } = require("../usecases/pet.usecase");
-const { createAppointment } = require("../usecases/appointment.usecase");
+const { createPet, getPet, updatePet, deletePet, updatePetRecords, getRecordsbyPetID } = require("../usecases/pet.usecase");
+const { createRecord } = require("../usecases/record.usecase");
 const router = express.Router();
 
-//Create
 router.post("/", async (request, response) => {
     const { body } = request;
     try{
@@ -25,10 +23,8 @@ router.post("/", async (request, response) => {
     }    
 });
 
-//Get Pet by ID
 router.get("/:id", async (request, response) => {
     try {
-        // Path params
         const { params } = request;
         const pet = await getPet(params.id);
         response.json({
@@ -44,7 +40,6 @@ router.get("/:id", async (request, response) => {
     }
 });
 
-//Update
 router.patch("/:id", async (request, response) => {
     try {
         const { params, body } = request
@@ -66,7 +61,6 @@ router.patch("/:id", async (request, response) => {
     }
 });
 
-// Delete Pet 
 router.delete("/:id", async (request, response) => {
     try{
       const { params } = request
@@ -84,18 +78,16 @@ router.delete("/:id", async (request, response) => {
     }
 });
 
-//Add apointment by Pet ID
-router.post("/:id/appointments", async (request, response) => {
+router.post("/:id/records", async (request, response) => {
     const { body, params } = request;
     
     try{
-        const appt = await createAppointment(body);        
-        //Update pet with appt ID
-        const pet = await updatePetAppointments(params.id, appt._id)
+        const record = await createRecord(body); 
+        const pet = await updatePetRecords(params.id, record._id)
         response.status(201);
         response.json({
             success: true,
-            data: {appt, pet}
+            data: {record, pet}
         });
     }
     catch(error){
@@ -107,15 +99,13 @@ router.post("/:id/appointments", async (request, response) => {
     }    
 });
 
-//Get Appointments by Pet ID
-router.get("/:id/appointments", async (request, response) => {
+router.get("/:id/records", async (request, response) => {
     try {
-        // Path params
         const { params } = request;
-        const appt = await getAppointmentsbyPetID(params.id);
+        const records = await getRecordsbyPetID(params.id);
         response.json({
             success: true,
-            data: { appt }
+            data: { records }
         });
     } catch (error) {
         response.status(400);

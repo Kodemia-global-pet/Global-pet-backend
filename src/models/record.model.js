@@ -1,12 +1,19 @@
 const mongoose = require("mongoose");
 
-const appointmentSchema = new mongoose.Schema({
+const recordSchema = new mongoose.Schema({
     date: {
         type: Date,
         required: true
     },
+    title: {
+        type: String
+    },
     description: {
         type: String
+    },
+    type: {
+        type: String,
+        enum: ['Consulta', 'Vacuna', 'Desparacitación', 'Estetica', 'Otra', 'Archivo']
     },
     vet: {
         type: String
@@ -19,4 +26,4 @@ const appointmentSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("appointment", appointmentSchema);
+module.exports = mongoose.model("record", recordSchema);
