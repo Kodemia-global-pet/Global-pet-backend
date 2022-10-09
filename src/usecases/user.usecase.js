@@ -1,8 +1,6 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 
-//Use Cases = Handlers
-
 const createUser = async (userData) => {
     const hashPassword = await bcrypt.hash(userData.password, 10);
     const user = User.create({...userData, password: hashPassword});
@@ -14,8 +12,8 @@ const getUser = (id) => {
         path: 'pets',
         model: 'pet',
         populate: {
-            path: 'appointments',
-            model: 'appointment',
+            path: 'records',
+            model: 'record',
             populate: {
                 path: 'attachments',
                 model: 'attachment'

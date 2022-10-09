@@ -4,11 +4,8 @@ const auth = require ("../middlewares/auth.middleware");
 const { createUser, getUser, updateUser, deleteUser, updateUserPets} = require("../usecases/user.usecase");
 const { createPet } = require("../usecases/pet.usecase");
 
-
-
 const router = express.Router();
 
-//Create user
 router.post("/", async (request, response) => {
     const { body } = request;
     try{
@@ -30,7 +27,6 @@ router.post("/", async (request, response) => {
     }    
 });
 
-//Get User by ID
 router.get("/:id", async(request,response) =>{
     try{
         const { params } = request
@@ -52,7 +48,6 @@ router.get("/:id", async(request,response) =>{
     
 });
 
-//Update
 router.patch("/:id", auth, async (request,response) =>{
     try{
         const { params, body } = request
@@ -75,7 +70,6 @@ router.patch("/:id", auth, async (request,response) =>{
     
 });
 
-//Delete
 router.delete("/:id", auth, async(request,response) =>{
     try{
         const { params } = request
@@ -94,13 +88,11 @@ router.delete("/:id", auth, async(request,response) =>{
     
 });
 
-//Create pet by user id
 router.post("/:id/pet", async (request, response) => {
     const { body, params } = request;
     
     try{
-        const pet = await createPet(body);        
-        //Update pet with appt ID
+        const pet = await createPet(body);  
         const user = await updateUserPets(params.id, pet._id)
         response.status(201);
         response.json({

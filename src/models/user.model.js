@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-//const { StringDecoder } = require("string_decoder");
 
 const userSchema = new mongoose.Schema({    
     name: {

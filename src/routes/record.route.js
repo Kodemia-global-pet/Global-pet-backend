@@ -1,20 +1,18 @@
-// Endpoint
 const express = require("express");
 
-const { createAppointment, getAppointment, updateAppointment, deleteAppointment, updateAppointmetAttachments } = require("../usecases/appointment.usecase");
+const { createRecord, getRecord, updateRecord, deleteRecord, updateRecordAttachments } = require("../usecases/record.usecase");
 const { createAttachment } = require("../usecases/attachment.usecase");
 
 const router = express.Router();
 
-//Create
 router.post("/", async (request, response) => {
     const { body } = request;
     try{
-        const appt = await createAppointment(body);
+        const record = await createRecord(body);
         response.status(201);
         response.json({
             success: true,
-            data: {appt}
+            data: {record}
         });
     }
     catch(error){
@@ -26,15 +24,13 @@ router.post("/", async (request, response) => {
     }    
 });
 
-//Get Appt by ID
 router.get("/:id", async (request, response) => {
     try {
-        // Path params
         const { params } = request;
-        const appt = await getAppointment(params.id);
+        const record = await getRecord(params.id);
         response.json({
             success: true,
-            data: { appt }
+            data: { record }
         });
     } catch (error) {
         response.status(400);
@@ -45,16 +41,15 @@ router.get("/:id", async (request, response) => {
     }
 });
 
-//Update
 router.patch("/:id", async (request, response) => {
     try {
         const { params, body } = request
-        const appt = await updateAppointment(params.id, body)
+        const record = await updateRecord(params.id, body)
 
         response.json({
             success: true,
             data: {
-                appt
+                record
             }
         })
 
@@ -67,11 +62,10 @@ router.patch("/:id", async (request, response) => {
     }
 });
 
-// Delete Pet 
 router.delete("/:id", async (request, response) => {
     try{
       const { params } = request
-      const appt = await deleteAppointment(params.id)
+      const record = await deleteRecord(params.id)
       response.json({
         success: true,
       })
@@ -85,18 +79,16 @@ router.delete("/:id", async (request, response) => {
     }
 });
 
-//Add attachment by Appointment ID
 router.post("/:id/attachments", async (request, response) => {
     const { body, params } = request;
     
     try{
-        const attachment = await createAttachment(body);        
-        //Update pet with appt ID
-        const appt = await updateAppointmetAttachments(params.id, attachment._id)
+        const attachment = await createAttachment(body);   
+        const record = await updateRecordAttachments(params.id, attachment._id)
         response.status(201);
         response.json({
             success: true,
-            data: {appt, attachment}
+            data: {record, attachment}
         });
     }
     catch(error){

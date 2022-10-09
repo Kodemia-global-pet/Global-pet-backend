@@ -21,8 +21,7 @@ const petSchema = new mongoose.Schema({
     },
     feeding: {
         type: String
-    },
-    
+    },    
     activity_level: {
         type: String,
         enum: ['Low','Moderate','High']
@@ -30,11 +29,16 @@ const petSchema = new mongoose.Schema({
     allergies: {
         type: String
     },
+    visibility_status: {
+        type: String,
+        enum: ['disabled','contact','record'],
+        default: "disabled"
+    },
     other_info: {
         type: String
     },
-    appointments:{
-        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'appointment' }]
+    records:{
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'record' }]
     }
 })
 
