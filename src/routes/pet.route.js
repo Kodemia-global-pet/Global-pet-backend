@@ -11,7 +11,7 @@ router.post("/", async (request, response) => {
         response.status(201)
         response.json({
             success: true,
-            data: {pet}
+            data: pet
         });
     }
     catch(error){
@@ -29,7 +29,7 @@ router.get("/:id", async (request, response) => {
         const pet = await getPet(params.id);
         response.json({
             success: true,
-            data: { pet }
+            data: pet
         });
     } catch (error) {
         response.status(400);
@@ -47,9 +47,8 @@ router.patch("/:id", async (request, response) => {
 
         response.json({
             success: true,
-            data: {
-                pet
-            }
+            data: pet
+            
         })
 
     } catch (error) {
@@ -87,7 +86,7 @@ router.post("/:id/records", async (request, response) => {
         response.status(201);
         response.json({
             success: true,
-            data: {record, pet}
+            data: pet
         });
     }
     catch(error){
@@ -102,10 +101,10 @@ router.post("/:id/records", async (request, response) => {
 router.get("/:id/records", async (request, response) => {
     try {
         const { params } = request;
-        const records = await getRecordsbyPetID(params.id);
+        const pet = await getRecordsbyPetID(params.id);
         response.json({
             success: true,
-            data: { records }
+            data: pet 
         });
     } catch (error) {
         response.status(400);
