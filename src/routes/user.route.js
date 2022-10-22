@@ -34,9 +34,7 @@ router.get("/:id", async(request,response) =>{
         response.status(200);
         response.json({
             success: true,
-            data:({
-                user,
-            })
+            data: user
         })
     }catch(error){
     response.status(400)
