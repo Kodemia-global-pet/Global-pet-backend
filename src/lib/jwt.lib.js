@@ -2,11 +2,11 @@ const jwt = require("jsonwebtoken");
 const { JWT_KEY } = process.env;
 
 const sign = (payload = {}) => {
-    return jwt.sign(payload, JWT_KEY, { expiresIn: "8h" });
-}
+  return jwt.sign(payload, JWT_KEY, { expiresIn: "8d" });
+};
 
 const verify = (token) => {
-    return jwt.verify(token, JWT_KEY);
-}
+  return jwt.verify(token, JWT_KEY);
+};
 
-module.exports = { sign, verify }
+module.exports = { sign, verify };

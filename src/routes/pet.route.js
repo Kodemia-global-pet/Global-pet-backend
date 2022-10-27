@@ -1,6 +1,8 @@
 const express = require("express");
 const uploadAttachments = require("../lib/upload-attachments");
 const auth = require("../middlewares/auth.middleware");
+const uploadPhoto = require("../lib/upload-images");
+const singleUploader = uploadPhoto.array("photo");
 
 const {
   createPet,
@@ -48,10 +50,13 @@ router.get("/:id", async (request, response) => {
   }
 });
 
-router.patch("/:id", async (request, response) => {
+router.patch("/:id", auth, singleUploader, async (request, response) => {
+  const { params, body } = request;
+  const files = request.files;
+
+  const fileURL = files ? files[0]?.location : undefined;
   try {
-    const { params, body } = request;
-    const pet = await updatePet(params.id, body);
+    const pet = await updatePet(params.id, { ...body, photo: fileURL });
 
     response.json({
       success: true,
@@ -66,7 +71,7 @@ router.patch("/:id", async (request, response) => {
   }
 });
 
-router.delete("/:id", async (request, response) => {
+router.delete("/:id", auth, async (request, response) => {
   try {
     const { params } = request;
     const pet = await deletePet(params.id);

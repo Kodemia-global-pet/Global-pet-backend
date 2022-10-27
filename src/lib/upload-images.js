@@ -40,7 +40,7 @@ const uploadPhoto = multer({
   storage: multerS3ConfigPhoto,
   imageFilter,
   limits: {
-    fileSize: 1024 * 1024 * 5, // we are allowing only 5 MB files
+    fileSize: 1024 * 1024 * 8, // we are allowing only 8 MB files
   },
 });
 
