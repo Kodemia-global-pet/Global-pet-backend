@@ -3,6 +3,7 @@ const uploadAttachments = require("../lib/upload-attachments");
 const auth = require("../middlewares/auth.middleware");
 const uploadPhoto = require("../lib/upload-images");
 const singleUploader = uploadPhoto.array("photo");
+const fileUploader = uploadAttachments.array("file");
 
 const {
   createPet,
@@ -12,6 +13,8 @@ const {
   updatePetRecords,
   getRecordsbyPetID,
 } = require("../usecases/pet.usecase");
+const { createAttachment } = require("../usecases/attachment.usecase");
+
 const { createRecord } = require("../usecases/record.usecase");
 const router = express.Router();
 
@@ -87,11 +90,22 @@ router.delete("/:id", auth, async (request, response) => {
   }
 });
 
-router.post("/:id/records", async (request, response) => {
+router.post("/:id/records", auth, fileUploader, async (request, response) => {
   const { body, params } = request;
-
+  const files = request.files;
   try {
-    const record = await createRecord(body);
+    let attachmentsArr = files.map((file) => {
+      return createAttachment({
+        date: new Date(),
+        title: file.name,
+        url: file.location,
+      });
+    });
+    let attachments = await Promise.all(attachmentsArr);
+    const record = await createRecord({
+      ...body,
+      attachments: attachments.map(({ _id }) => _id),
+    });
     const pet = await updatePetRecords(params.id, record._id);
     response.status(201);
     response.json({
