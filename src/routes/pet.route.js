@@ -98,6 +98,7 @@ router.post("/:id/records", auth, fileUploader, async (request, response) => {
       return createAttachment({
         date: new Date(),
         title: file.name,
+        type: file.type,
         url: file.location,
       });
     });
