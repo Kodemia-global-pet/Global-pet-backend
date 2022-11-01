@@ -16,7 +16,7 @@ const {
 const { createAttachment } = require("../usecases/attachment.usecase");
 
 const { createRecord } = require("../usecases/record.usecase");
-const { getUser } = require("../usecases/user.usecase");
+const { getUserByPetID } = require("../usecases/user.usecase");
 const router = express.Router();
 
 router.post("/", async (request, response) => {
@@ -142,7 +142,7 @@ router.get("/:id/records", async (request, response) => {
 router.get("/:id/user", async (request, response) => {
   try {
     const { params } = request;
-    const pet = await getUser(params.id);
+    const pet = await getUserByPetID(params.id);
     response.status(200);
     response.json({
       success: true,

@@ -49,10 +49,16 @@ const updateUserPets = (id, petID) => {
   return pet;
 };
 
+const getUserByPetID = (petID) => {
+  const user = User.findOne({ pets: { $in: [petID] } });
+  return user;
+};
+
 module.exports = {
   createUser,
   getUser,
   updateUser,
   deleteUser,
   updateUserPets,
+  getUserByPetID,
 };
