@@ -52,10 +52,16 @@ router.get("/:id", async (request, response) => {
   }
 });
 
-router.patch("/:id", auth, async (request, response) => {
+
+router.patch("/:id", auth, singleUploader, async (request, response) => {
   try {
     const { params, body } = request;
-    const user = await updateUser(params.id, body);
+    const files = request.files;
+    const fileURL = files ? files[0]?.location : undefined;
+    console.log("Body", body)
+    console.log("fileURL", fileURL)
+    
+    const user = await updateUser(params.id, { ...body, photo: fileURL });
     response.status(200);
     response.json({
       success: true,
