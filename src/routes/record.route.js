@@ -11,6 +11,7 @@ const {
   removeRecordAttachments,
 } = require("../usecases/record.usecase");
 const { createAttachment } = require("../usecases/attachment.usecase");
+const { getPetbyRecordID } = require("../usecases/pet.usecase");
 
 const router = express.Router();
 
@@ -36,9 +37,10 @@ router.get("/:id", async (request, response) => {
   try {
     const { params } = request;
     const record = await getRecord(params.id);
+    const { _id, name } = await getPetbyRecordID(params.id);
     response.json({
       success: true,
-      data: { record },
+      data: { record, petID: _id, name },
     });
   } catch (error) {
     response.status(400);
